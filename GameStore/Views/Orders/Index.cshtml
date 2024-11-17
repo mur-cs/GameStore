@@ -1,0 +1,36 @@
+﻿<h3 class="p-2 bg-primary text-white text-center">Заказы</h3>
+<div class="container">
+    <div class="row">
+        <div class="col-1 fw-bold">Id</div>
+        <div class="col fw-bold">Название</div>
+        <div class="col fw-bold">ZipCode</div>
+        <div class="col fw-bold">Всего</div>
+        <div class="col fw-bold">Сумма</div>
+        <div class="col fw-bold">Статус</div>
+        <div class="col-3"></div>
+    </div>
+</div>
+
+<div>
+    @foreach (Order order in Model)
+    {
+        <div class="d-flex align-items-center border-bottom p-2">
+            <div class="col-1">@order.Id</div>
+            <div class="col">@order.CustomerName</div>
+            <div class="col">@order.ZipCode</div>
+            <div class="col">@order.Lines.Sum(x => x.Quantity)</div>
+            <div class="col">@order.Lines.Sum(x => x.Quantity * x.Product.RetailPrice - x.Product.PurchasePrice)</div>
+            <div class="col">@(order.Shipped ? "Отправлен" : "Ожидается отправка")</div>
+            <div class="col-3 text-right">
+                <form asp-action="DeleteOrder" method="post" class="d-inline">
+                    <input type="hidden" name="Id" value="@order.Id" />
+                    <a asp-action="EditOrder" asp-route-id="@order.Id" class="btn btn-outline-primary">Редактировать</a>
+                    <button type="submit" class="btn btn-outline-danger">Удалить</button>
+                </form>
+            </div>
+        </div>
+    }
+    <div class="text-center mt-3">
+        <a asp-action="EditOrder" class="btn btn-primary">Создать</a>
+    </div>
+</div>
