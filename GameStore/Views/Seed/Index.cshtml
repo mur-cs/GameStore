@@ -1,4 +1,17 @@
-﻿<form method="post">
+﻿@inject GameStore.Services.AuthService authService
+
+@{
+	if (authService.GetLoggedUser().UserName.ToLower()=="admin")
+	{
+		Layout = "_AdminLayout";
+	}
+	else
+	{
+		Layout = "_UserLayout";
+	}
+}
+
+<form method="post">
 	<div class="text-center">
 		<button type="submit" asp-action="CreateSeedData" class="btn btn-primary">Заполнить базу</button>
 		<button type="submit" asp-action="ClearData" class="btn btn-primary">Очистить базу</button>

@@ -1,5 +1,16 @@
-﻿@{
+﻿@inject GameStore.Services.AuthService authService
+
+@{
     ViewData["Title"] = "Все товары";
+
+    if(authService.GetLoggedUser().UserName.ToLower()=="admin")
+    {
+        Layout = "_AdminLayout";
+    }
+    else
+    {
+        Layout = "_UserLayout";
+    }
 }
 @model IEnumerable<Product>
 
@@ -31,17 +42,32 @@
                 <div class="col text-right">@product.PurchasePrice</div>
                 <div class="col text-right">@product.RetailPrice</div>
                 <div class="col">
+                @if (authService.GetLoggedUser().UserName.ToLower()=="admin")
+                {
                     <form asp-action="DeleteProduct" method="post" onsubmit="return confirm('Вы уверены, что хотите удалить этот товар?')">
-                        <input type="hidden" name="Id" value="@product.Id"/>
+                        <input type="hidden" name="Id" value="@product.Id" />
                         <a asp-action="UpdateProduct" asp-route-id="@product.Id" class="btn btn-outline-primary">Редактировать</a>
                         <button type="submit" class="btn btn-outline-danger">Удалить</button>
                     </form>
+                }
+                else
+                {
+                    <form asp-action="Index" asp-controller="Cart" asp-route-userId="@authService.GetLoggedUser().Id" asp-route-productId="@product.Id" method="post" onsubmit="return confirm('Вы уверены, что хотите добавить этот товар в корзину?'" )>
+                        <input type="hidden" name="id" value="@product.Id"/>
+                        <button type="submit" class="btn btn-outline-primary">Добавить</button>
+                    </form>
+                }
+               
                 </div>
             </div>
         }
-       <div class="text-center p-2">
-           <a asp-action="UpdateProduct" asp-route-id="0" class="btn btn-primary">Добавить</a>
-       </div>
+    @if (authService.GetLoggedUser().UserName.ToLower()=="admin")
+    {
+        <div class="text-center p-2">
+            <a asp-action="UpdateProduct" asp-route-id="0" class="btn btn-primary">Добавить</a>
+        </div>
+    }
+    
 
     <div class="text-center">
         @Html.Partial("_Pages", Model)

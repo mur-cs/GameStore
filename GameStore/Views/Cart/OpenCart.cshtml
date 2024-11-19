@@ -1,0 +1,58 @@
+﻿@{
+    Layout = "_UserLayout";
+}
+
+@model List<GameStore.Models.Cart>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Дані для замовлення</h3>
+            <form asp-controller="Orders" asp-action="AddOrUpdateOrder" method="post">
+                <div class="mb-3">
+                    <label for="CustomerName">Ім'я замовника</label>
+                    <input type="text" class="form-control" id="CustomerName" name="CustomerName" required />
+                </div>
+                <div class="mb-3">
+                    <label for="Address">Адреса</label>
+                    <input type="text" class="form-control" id="Address" name="Address" required />
+                </div>
+                <div class="mb-3">
+                    <label for="State">Штат</label>
+                    <input type="text" class="form-control" id="State" name="State" required />
+                </div>
+                <div class="mb-3">
+                    <label for="ZipCode">Поштовий індекс</label>
+                    <input type="text" class="form-control" id="ZipCode" name="ZipCode" required />
+                </div>
+
+                @for (int i = 0; i < Model.Count; i++)
+                {
+                    <input type="hidden" name="Lines[@i].ProductId" value="@Model[i].ProductId" />
+                    <input type="hidden" name="Lines[@i].Quantity" value="1" /> 
+                }
+                <button type="submit" class="btn btn-primary">Створити замовлення</button>
+            </form>
+        </div>
+
+        <div class="col-md-6">
+            <h3>Ваші товари</h3>
+            @foreach (var cartItem in Model)
+            {
+                <div class="card mb-3" style="background-color: #f0f0f0; padding: 15px;">
+                    <h5>Товар: @cartItem.Product?.Name</h5>
+                    <p>Ціна: @cartItem.Product?.RetailPrice грн</p>
+                    <p>Користувач: @cartItem.User?.UserName</p>
+
+                    
+
+                    <form asp-controller="Cart" asp-action="Delete" method="post">
+                        <input type="hidden" name="cartId" value="@cartItem.Id" />
+                        <input type="hidden" name="userId" value="@cartItem.UserId" />
+                        <button type="submit" class="btn btn-danger">Видалити</button>
+                    </form>
+                </div>
+            }
+        </div>
+    </div>
+</div>

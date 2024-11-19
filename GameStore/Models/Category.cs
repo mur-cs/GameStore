@@ -1,4 +1,6 @@
-﻿namespace GameStore.Models
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace GameStore.Models
 {
 	public class Category
 	{

@@ -1,4 +1,17 @@
-﻿<h3 class="p-2 bg-primary text-white text-center">Категории</h3>
+﻿@inject GameStore.Services.AuthService authService
+
+@{
+	if (authService.GetLoggedUser().UserName.ToLower()=="admin")
+	{
+		Layout = "_AdminLayout";
+	}
+	else
+	{
+		Layout = "_UserLayout";
+	}
+}
+
+<h3 class="p-2 bg-primary text-white text-center">Категории</h3>
 <div class="container-fluid mt-3">
 	<div class="row">
 		<div class="col-1 fw-bold">Id</div>

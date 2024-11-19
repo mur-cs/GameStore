@@ -1,6 +1,7 @@
 using GameStore.Data;
 using GameStore.Interfaces;
 using GameStore.Repository;
+using GameStore.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,9 @@ builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServe
 builder.Services.AddScoped<IProduct, ProductRepository>();
 builder.Services.AddScoped<ICategory, CategoryRepository>();
 builder.Services.AddScoped<IOrder, OrderRepository>();
+builder.Services.AddScoped<IUser, UserRepository>();
+builder.Services.AddScoped<ICart, CartRepository>();
+builder.Services.AddSingleton<AuthService>();
 
 var app = builder.Build();
 
@@ -31,6 +35,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Login}/{id?}");
 
 app.Run();

@@ -1,4 +1,15 @@
-﻿@model Product
+﻿@{
+	if(ViewBag.User.UserName.ToLower()=="admin")
+	{
+		Layout = "_AdminLayout";
+	}
+	else
+	{
+		Layout = "_UserLayout";
+	}
+}
+
+@model Product
 
 <div class="p-5 text-center bg-light">
 	<h2 class="mb-3">Создание / Обновление товара</h2>
