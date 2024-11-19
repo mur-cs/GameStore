@@ -65,7 +65,6 @@ namespace GameStore.Controllers
             }
             else
             {
-                // Фільтруємо лише валідні `OrderLine`
                 order.Lines = order.Lines
                     .Where(x => x.Id > 0 || (x.Id == 0 && x.Quantity > 0))
                     .ToList();
@@ -73,10 +72,7 @@ namespace GameStore.Controllers
 
             if (order.Id == 0)
             {
-                // Додавання нового замовлення
-                
 
-                // Очищення кошика для поточного користувача
                 var carts = _cart.GetAllCarts()
                     .Where(x => x.UserId == order.UserId)
                     .ToList();
@@ -85,7 +81,7 @@ namespace GameStore.Controllers
                     order.Lines.ToList().Add(new OrderLine
                     {
                         ProductId = cart.ProductId,
-                        Quantity = 1, // Приклад - встановлення кількості. Можна змінити на основі логіки.
+                        Quantity = 1, 
                         OrderId = order.Id
                     });
 
@@ -95,7 +91,6 @@ namespace GameStore.Controllers
             }
             else
             {
-                // Оновлення існуючого замовлення
                 _orders.UpdateOrder(order);
             }
 
